@@ -1,19 +1,16 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 
 
-
+// store de authenticacion
 export const useAuthStore = defineStore('auth',{
     state: ()=>({
         accessToken: null,
         authUser: null,
-        theme: ref(true),
     }),
 
     getters: {
         getAccesToken : (state) => state.accessToken,
         getAuthUser: (state) => state.authUser,
-        getCurrentTheme: (state) => state.theme,
     },
 
 
@@ -26,11 +23,10 @@ export const useAuthStore = defineStore('auth',{
         setAuthUser(authUser){
             this.authUser = authUser;
         },
-        
-        setCurrentTheme(theme){
-            this.theme = theme
-        }
 
+    },
+    persist:{
+        storage: sessionStorage,
+        paths: ['someState']
     }
-    
 });

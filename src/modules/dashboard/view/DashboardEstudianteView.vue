@@ -1,7 +1,8 @@
 <!-- html -->
 <template>
-  <div class="clase" style="color: white;">
-    HOLAAAA
+  <div class="clase">
+
+    <h1>vista de estudiantes</h1>
   </div>
 </template>
 

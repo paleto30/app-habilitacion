@@ -7,20 +7,25 @@
         <div>
             <h2 class="text-center mt-3">Iniciar Sesión</h2>
         </div>
-        <form class="p-3">
-            <div class="mb-3">
-
-                <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    v-model="email" placeholder="Correo electrónico">
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control text-center" id="exampleInputPassword1" v-model="password"
-                    placeholder="Contraseña">
+        <form class="p-3" @submit.prevent="handleFormData">
+            <div class="row mb-1 mb-md-3">
+                <div class="mb-1 mb-md-3">
+                    <input type="email" class="form-control text-center inputs" id="correo" v-model="correo"
+                        placeholder="Correo institucional">
+                </div>
+                <div class="mb-1 mb-md-3 caja">
+                    <span class="icon-eye" :class="{'ojo' : colorEye, 'ojoo': !colorEye}" @click="showKey"></span>
+                    <input :type="showPass ? 'text' : 'password' " class="form-control text-center inputs" v-model="password" placeholder="Contraseña" id="pass">
+                </div>
             </div>
             <div class="mt-4 d-flex justify-content-center">
-                <button @click.prevent="handleCredentials" type="submit" class="btn btn-primary" style="width: 65%;">Submit</button>
+                <button type="submit" class="btn btn-primary" style="width: 50%;">Iniciar
+                    Sesion</button>
             </div>
 
+            <div id="emailHelp" class="form-text text-center ">¿ No tienes una cuenta ? <button
+                    @click.prevent="handleComponent" type="button" class="myLink">Registrate</button>
+            </div>
             <div class="mt-5">
                 <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
                     uso<br> al ingresar en este aplicativo</div>
@@ -33,37 +38,74 @@
 <!-- Js -->
 <script setup>
 
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import authServices from '../service/authServices.js';
 
 
-const email = ref('');
+
+// atributos del componente
+const correo = ref('');
 const password = ref('');
 
-const emit = defineEmits(['sendCredentials']);
+// funcion para manejar el envio de credenciales
+const handleFormData = async () => {
 
-const handleCredentials = () =>{
-    emit('sendCredentials', {email: email.value, password: password.value})
+    if (!correo.value.trim() || !password.value.trim()) {
+        alert('Ningun campo puede estar vacio')
+        return
+    }
+
+    const user = {
+        email: correo.value,
+        password: password.value
+    }
+
+    const response = await authServices.sendCredentialsForLogin(user);
+
+    if (response == undefined) {
+        return alert('Credenciales invalidad');
+    }
+
+    
+
+    router.push({ name: 'dashboard-estudiante' })
+
+    correo.value = undefined
+    password.value = undefined
+
 }
 
 
+
+// router -> enviar al formulario de registro 
+const router = useRouter();
+const handleComponent = () => {
+    router.push({ name: 'register' })
+}
+
+
+
+
+// variables para manejar el ojo de el input clave
+const showPass = ref(false);
+let colorEye = ref(true); 
+// funcion para manejar el ojo de ver la contraseña
+const showKey = () =>{    
+    showPass.value = !showPass.value;
+    colorEye.value = !colorEye.value;
+}
 
 </script>
 
 
 <!-- CSS -->
 <style scoped>
-
-
 .form {
-    width: 550px;
+    width: 510px;
     height: 550px;
-    box-shadow: 5px 4px 50px rgba(0, 0, 0, 0.171);
+    box-shadow: 5px 4px 50px rgba(0, 0, 0, 0.300);
 }
-
-
-
-
-
 
 
 .logo {
@@ -77,6 +119,56 @@ const handleCredentials = () =>{
     width: 25%;
 }
 
+.myLink {
+    text-decoration: underline;
+    color: #008000;
+    border: none;
+    background: none;
+}
 
+.myLink:hover {
+    color: var(--colorfocus-link);
+}
 
+::placeholder {
+    color: rgb(162, 167, 170);
+}
+
+.inputs{
+    border-color: #3b3b3b4f;
+}
+
+.caja{
+    position: relative;
+}
+
+.ojo{
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    bottom: 0;
+    font-size: 18px;
+    margin-right: 18px;
+    margin-bottom: 6px;
+    color: #808380;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.ojoo{
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    bottom: 0;
+    font-size: 18px;
+    margin-right: 18px;
+    margin-bottom: 6px;
+    color: var(--maincolor-green);
+    border-radius: 50%;
+    text-align: center;
+}
+
+.ojo:hover{
+    color: var(--maincolor-green);
+}
 </style>
