@@ -11,6 +11,9 @@
   --fontcolor-dark : #17202A; 
   --maincolor-green: #008000;
   --colorfocus-link: rgb(43, 135, 221);
+  --alert-success: #d0f3cf;
+  --alert-advertence: rgba(243, 160, 5, 0.884);
+  --text-advertence:var(--fontcolor-dark)
 }
 
 

@@ -6,16 +6,19 @@ const baseUrl = 'http://localhost:5500/api/v1/authentication'
 
 const sendCredentialsForLogin = async (usuario) => {
     try {
+        const request = await fetch(`${baseUrl}/registrarse`,{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(usuario)
+            });
 
-        const url = `http://localhost:5009/users?correo=${usuario.email}&clave=${usuario.password}`
-        const sendCredentials = await fetch(url);
-        const results = await sendCredentials.json();
+        const response = await request.json();
 
-        if (results.length > 0) {
-            return results[0]
-        }
-        return undefined;
-
+        
+        console.log(response);
+        return response;
     } catch (error) {
         console.log(error);
     }
@@ -72,7 +75,6 @@ const getAvailablesCoordinaciones = async (id_facultad) => {
 
         const data = await fetch(`${baseUrl}/facultad/${id_facultad}/coordinaciones`)
         const result = await data.json();
-
     
         if (!result.status) {
             return []
@@ -116,5 +118,5 @@ export default {
     getAvailablesSedes,
     getAvailablesFacultades,
     getAvailablesCoordinaciones,
-    getAvailablesCarreras        
+    getAvailablesCarreras,        
 }

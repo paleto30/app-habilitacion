@@ -8,43 +8,47 @@
             <img src="../../../assets/logo.svg" class="logo_login" alt="" srcset="">
         </div>
 
-        <form class="p-2 container" @submit.prevent="handleFormData">
+        <form class="p-md-2 container" @submit.prevent="handleFormData">
 
             <!-- fila 1 -->
-            <div class="row mb-1 mb-md-3">
+            <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <select class="form-select text-center inputs" v-model="sede" id="sede" @change="loadFacultades">
-                        <option value="null" selected>Seleccione la Sede</option>
-                        <option class="text-start" v-for="item in sedes" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                        <option value="null" selected class="defaults">Seleccione la Sede</option>
+                        <option class="text-start" v-for="item in sedes" :key="item.id" :value="item.id">{{ item.nombre }}
+                        </option>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
                     <select class="form-select text-center inputs" v-model="facultad" :disabled="!sede || sede === 'null'"
                         @change="loadCoordinaciones">
-                        <option value="null" selected>Seleccione la Facultad</option>
-                        <option class="text-start" v-for="item in facultades" :key="item.id" :value="item.id"> {{ item.codigo }}</option>
+                        <option value="null" selected class="defaults">Seleccione la Facultad</option>
+                        <option class="text-start" v-for="item in facultades" :key="item.id" :value="item.id"> {{
+                            item.codigo }}</option>
                     </select>
                 </div>
             </div>
             <!-- fila 2 -->
-            <div class="row mb-1 mb-md-3">
+            <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <select class="form-select text-center inputs" v-model="coordinacion"
                         :disabled="!facultad || facultad === 'null'" @change="loadCarreras">
-                        <option value="null" selected>Seleccione la Coordinación</option>
-                        <option class="text-start" v-for="item in coordinaciones" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                        <option value="null" selected class="defaults">Seleccione la Coordinación</option>
+                        <option class="text-start" v-for="item in coordinaciones" :key="item.id" :value="item.id">{{
+                            item.nombre }}</option>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
                     <select class="form-select text-center inputs" v-model="carrera"
                         :disabled="!coordinacion || coordinacion === 'null'">
-                        <option value="null" selected>Seleccione la carrera</option>
-                        <option class="text-start" v-for="item in carreras" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                        <option value="null" selected class="defaults">Seleccione la carrera</option>
+                        <option class="text-start" v-for="item in carreras" :key="item.id" :value="item.id">{{ item.nombre
+                        }}</option>
                     </select>
                 </div>
             </div>
             <!-- fila 3 -->
-            <div class="row  mb-1 mb-md-3">
+            <div class="row  mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <input type="text" class="form-control text-center inputs" id="nombre" v-model="nombre"
                         placeholder="Nombres">
@@ -55,7 +59,7 @@
                 </div>
             </div>
             <!-- fila 4 -->
-            <div class="row mb-1 mb-md-3 ">
+            <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <input type="text" class="form-control text-center inputs" id="doc_id" v-model="doc_id"
                         placeholder="Documento de identidad">
@@ -66,7 +70,8 @@
                 </div>
             </div>
 
-            <div class="row mb-1 mb-md-3">
+            <!-- fila 5 -->
+            <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="mb-1 mb-md-3">
                     <input type="email" class="form-control text-center inputs" id="correo" v-model="correo"
                         placeholder="Correo institucional">
@@ -77,19 +82,25 @@
                         placeholder="Contraseña" id="pass">
                 </div>
             </div>
+            <!-- fila 6 -->
+            <div class="row">
+                <div class="col-12 mb-2  d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" style="width: 50%;">Registrarse</button>
+                </div>
+                <div id="emailHelp" class="m-0 mb-1 mt-md-3 form-text text-center ">¿ Ya tienes una cuenta ? <button
+                        @click.prevent="handleComponent" type="button" class="myLink">Iniciar
+                        sesión</button>
+                </div>
+                <div class="mt-md-4 w-100">
+                    <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
+                        uso al ingresar en este aplicativo</div>
+                </div>
 
-            <div class="mt-4 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary" style="width: 50%;">Registrarse</button>
             </div>
-            <div id="emailHelp" class="mt-3 form-text text-center ">¿ Ya tienes una cuenta ? <button
-                    @click.prevent="handleComponent" type="button" class="myLink">Iniciar
-                    sesión</button> </div>
-            <div class="mt-4">
-                <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
-                    uso<br> al ingresar en este aplicativo</div>
-            </div>
+
         </form>
     </div>
+    <AlertComponentVue />
 </template>
 
 
@@ -99,6 +110,8 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import authServices from '../service/authServices.js';
+import AlertComponentVue from '../../../shared/components/AlertComponent.vue';
+
 
 
 // sedes
@@ -129,21 +142,23 @@ const password = ref();
 
 
 
-
+// funcion para cargar los datos en el select de facultades
 const loadFacultades = async () => {
     if (sede.value === 'null') {
         facultad.value = null;
         coordinacion.value = null;
         carrera.value = null;
-    } 
+    }
 }
 
+// funcion para cargar los datos en el select de coordinaciones
 const loadCoordinaciones = async () => {
     if (facultad.value) {
         coordinacion.value = null
     }
 }
 
+// funcion para cargar los datos en el select de carreras
 const loadCarreras = async () => {
     if (coordinacion.value) {
         carrera.value = null
@@ -153,21 +168,21 @@ const loadCarreras = async () => {
 
 
 // watch para revisar los cambios en el select de sede
-watch(sede , async (newSede)=>{ 
+watch(sede, async (newSede) => {
     const data = await authServices.getAvailablesFacultades(newSede);
     facultad.value = null;
     facultades.value = data;
 });
 
 // watch para revisar los cambios en el select de facultad
-watch(facultad, async(newFacultad)=>{
+watch(facultad, async (newFacultad) => {
     const data = await authServices.getAvailablesCoordinaciones(newFacultad);
     coordinacion.value = null;
     coordinaciones.value = data;
 })
 
 // watch para revisar los cambios en el select de coordinacion
-watch(coordinacion, async(newCoordinacion)=>{
+watch(coordinacion, async (newCoordinacion) => {
     const data = await authServices.getAvailablesCarreras(newCoordinacion);
     carrera.value = null;
     carreras.value = data;
@@ -201,6 +216,49 @@ const showKey = () => {
     colorEye.value = !colorEye.value;
 }
 
+
+
+/* limpiar formulario */
+function restartForm() {
+    sede.value = null
+    facultad.value = null
+    coordinacion.value = null
+    carrera.value = null
+    nombre.value = null
+    apellido.value = null
+    doc_id.value = null
+    telefono.value = null
+    correo.value = null
+    password.value = null
+}
+
+
+
+// funcion para manejar el envio del formulario
+const handleFormData = async () => {
+
+    const dataToSend = {
+        doc_id: doc_id.value,
+        nombre: nombre.value,
+        apellido: apellido.value,
+        telefono: String(telefono.value),
+        correo: correo.value,
+        clave: password.value,
+        id_carrera: Number(carrera.value)
+    }
+
+    //console.log(dataToSend);
+
+    const results = await authServices.sendCredentialsForLogin(dataToSend);
+
+    restartForm()
+    console.log("desde el componente: ", results);
+
+
+}
+
+
+
 </script>
 
 
@@ -223,6 +281,11 @@ const showKey = () => {
 }
 
 
+
+.rowsSmalls {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
 
 .logo {
     display: flex;
@@ -293,5 +356,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .ojo:hover {
     color: var(--maincolor-green);
+}
+
+
+
+.defaults {
+    font-weight: bold;
 }
 </style>

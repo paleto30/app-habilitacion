@@ -1,9 +1,9 @@
 <!-- html -->
 <template>
-    <div class="container-fluid ">
+    <div class="container-fluid  miclass">
 
         <!-- toda la vista de la pantalla -->
-        <section class="row seccion">
+        <section class="row seccion mx-auto px-auto">
 
             <!-- seccion 1 -->
             <aside class="a-left m-0 p-0 col-12 col-sm-12 col-md-5 bg-success">
@@ -12,23 +12,17 @@
 
             <!-- seccion 2 -->
             <aside class="a-rigth m-0 col-12 col-sm-12 col-md-7 derecha">
+                
                 <!-- formularios (registro o login) -->
                 <router-view />
             </aside>
         </section>
-
     </div>
 </template>
 
 
 <!-- Js -->
 <script setup>
-
-
-
-
-
-
 
 
 
@@ -40,6 +34,13 @@
 
 <!-- CSS -->
 <style >
+
+.miclass{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
 .seccion {
     height: 100vh;
 }

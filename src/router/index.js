@@ -33,6 +33,11 @@ const routes = [
     path: '/dashboard-estudiante',
     name: 'dashboard-estudiante',
     component: () => import('../modules/dashboard/view/DashboardEstudianteView.vue')
+  },
+  {
+    path: '/alert',
+    name: 'alert',
+    component: () => import('../shared/components/AlertComponent.vue')
   }
 ]
 
