@@ -1,7 +1,5 @@
-
-
-
 const baseUrl = 'http://localhost:5500/api/v1/authentication'
+
 
 
 const sendCredentialsForLogin = async (usuario) => {
@@ -15,9 +13,6 @@ const sendCredentialsForLogin = async (usuario) => {
             });
 
         const response = await request.json();
-
-        
-        console.log(response);
         return response;
     } catch (error) {
         console.log(error);

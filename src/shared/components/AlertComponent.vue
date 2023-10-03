@@ -1,9 +1,9 @@
 <!-- html -->
 <template>
     <div class="miAlert">
-        <div class="alert color-alert" role="alert">
-            ¡Su registro fue exitoso!
-            <span class="icon-ok-circle  icon">
+        <div class="alert" :class="{ 'color-alert-success ': props.state, 'color-alert-faild': !props.state }" role="alert">
+            {{ props.message }}
+            <span class="icon" :class="{ 'icon-ok-circle': props.state, 'icon-cancel-circled': !props.state }">
             </span>
         </div>
     </div>
@@ -12,6 +12,20 @@
 
 <!-- Js -->
 <script setup>
+
+import { defineProps , } from 'vue';
+
+
+const props = defineProps({
+    state : {
+        type: Boolean,
+        required: true
+    },
+    message:{
+        type: String,
+        required: true
+    }
+})
 
 
 
@@ -38,17 +52,26 @@
 }
 
 
-.color-alert {
+.color-alert-faild {
+    background-color: var(--alert-success);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b61919;
+    flex-direction: column;
+}
+
+.color-alert-success {
     background-color: var(--alert-success);
     display: flex;
     justify-content: center;
     align-items: center;
     color: #008000;
     flex-direction: column;
+
 }
 
-.icon{
+.icon {
     font-size: 25px;
 }
-
 </style>

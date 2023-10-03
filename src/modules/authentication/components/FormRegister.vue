@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <select class="form-select text-center inputs" v-model="carrera"
-                        :disabled="!coordinacion || coordinacion === 'null'">
+                        :disabled="!coordinacion || coordinacion === 'null'" required>
                         <option value="null" selected class="defaults">Seleccione la carrera</option>
                         <option class="text-start" v-for="item in carreras" :key="item.id" :value="item.id">{{ item.nombre
                         }}</option>
@@ -51,22 +51,22 @@
             <div class="row  mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <input type="text" class="form-control text-center inputs" id="nombre" v-model="nombre"
-                        placeholder="Nombres">
+                        placeholder="Nombres" required>
                 </div>
                 <div class="col-12 col-md-6 ">
                     <input type="text" class="form-control text-center inputs" id="apellido" v-model="apellido"
-                        placeholder="Apellidos">
+                        placeholder="Apellidos" required>
                 </div>
             </div>
             <!-- fila 4 -->
             <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
-                    <input type="text" class="form-control text-center inputs" id="doc_id" v-model="doc_id"
-                        placeholder="Documento de identidad">
+                    <input type="number" class="form-control text-center inputs" id="doc_id" v-model="doc_id"
+                        placeholder="Documento de identidad" ref="">
                 </div>
                 <div class="col-12 col-md-6">
                     <input type="number" class="form-control text-center inputs" id="telefono" v-model="telefono"
-                        placeholder="Numero celular">
+                        placeholder="Numero celular" required>
                 </div>
             </div>
 
@@ -74,12 +74,12 @@
             <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="mb-1 mb-md-3">
                     <input type="email" class="form-control text-center inputs" id="correo" v-model="correo"
-                        placeholder="Correo institucional">
+                        placeholder="Correo institucional" required>
                 </div>
                 <div class="mb-1 mb-md-3 caja">
                     <span class="icon-eye" :class="{ 'ojo': colorEye, 'ojoo': !colorEye }" @click="showKey"></span>
                     <input :type="showPass ? 'text' : 'password'" class="form-control text-center inputs" v-model="password"
-                        placeholder="Contraseña" id="pass">
+                        placeholder="Contraseña" id="pass" required>
                 </div>
             </div>
             <!-- fila 6 -->
@@ -100,7 +100,9 @@
 
         </form>
     </div>
-    <AlertComponentVue />
+    <div v-if="showAlert">
+        <AlertComponentVue :message="message" :state="state" />
+    </div>
 </template>
 
 
@@ -112,6 +114,12 @@ import { ref, onMounted, watch } from 'vue';
 import authServices from '../service/authServices.js';
 import AlertComponentVue from '../../../shared/components/AlertComponent.vue';
 
+
+
+// alert
+const showAlert = ref(false)
+const message = ref("");
+const state = ref(true);
 
 
 // sedes
@@ -218,6 +226,8 @@ const showKey = () => {
 
 
 
+
+
 /* limpiar formulario */
 function restartForm() {
     sede.value = null
@@ -238,7 +248,7 @@ function restartForm() {
 const handleFormData = async () => {
 
     const dataToSend = {
-        doc_id: doc_id.value,
+        doc_id: String(doc_id.value),
         nombre: nombre.value,
         apellido: apellido.value,
         telefono: String(telefono.value),
@@ -247,12 +257,25 @@ const handleFormData = async () => {
         id_carrera: Number(carrera.value)
     }
 
-    //console.log(dataToSend);
-
     const results = await authServices.sendCredentialsForLogin(dataToSend);
 
-    restartForm()
-    console.log("desde el componente: ", results);
+    if (!results.status) {
+        showAlert.value = !showAlert.value;
+        state.value = results.status;
+        message.value = results.error;
+        setTimeout(() => {
+            showAlert.value = !showAlert.value
+        }, 2500)
+    } else {
+        showAlert.value = !showAlert.value
+        state.value = results.status
+        message.value = results.message
+        setTimeout(() => {
+            showAlert.value = !showAlert.value
+        }, 2200)
+        restartForm()
+    }
+
 
 
 }
