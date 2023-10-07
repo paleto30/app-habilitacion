@@ -2,7 +2,7 @@
 <template>
     <div class="form border rounded">
         <div class="logo">
-            <img src="../../../assets/logo.svg" class="logo_login" alt="" srcset="">
+            <img src="../../../assets/Manzanavector.svg" class="logo_login" alt="" srcset="">
         </div>
         <div>
             <h2 class="text-center mt-3">Iniciar Sesión</h2>
@@ -14,8 +14,9 @@
                         placeholder="Correo institucional">
                 </div>
                 <div class="mb-1 mb-md-3 caja">
-                    <span class="icon-eye" :class="{'ojo' : colorEye, 'ojoo': !colorEye}" @click="showKey"></span>
-                    <input :type="showPass ? 'text' : 'password' " class="form-control text-center inputs" v-model="password" placeholder="Contraseña" id="pass">
+                    <span class="icon-eye" :class="{ 'ojo': colorEye, 'ojoo': !colorEye }" @click="showKey"></span>
+                    <input :type="showPass ? 'text' : 'password'" class="form-control text-center inputs" v-model="password"
+                        placeholder="Contraseña" id="pass">
                 </div>
             </div>
             <div class="mt-4 d-flex justify-content-center">
@@ -41,39 +42,64 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import authServices from '../service/authServices.js';
+import { invokeAlert, alertProccessSuccess } from '../../../shared/js/alertabase.js';
+import { useAuthStore } from '../stores/authStore.js';
 
+
+const authStore = useAuthStore();
 
 
 // atributos del componente
 const correo = ref('');
 const password = ref('');
 
-// funcion para manejar el envio de credenciales
+
 const handleFormData = async () => {
 
-    if (!correo.value.trim() || !password.value.trim()) {
-        alert('Ningun campo puede estar vacio')
+    if (!correo.value || !password.value || !correo.value.trim() || !password.value.trim()) {
+        invokeAlert('Aviso!', 'Ningun campo puede estar vacio', 'warning', 'Entendido', '#2280E5')
         return
     }
 
     const user = {
-        email: correo.value,
-        password: password.value
+        correo: correo.value,
+        clave: password.value
     }
+    try {
 
-    const response = await authServices.sendCredentialsForLogin(user);
+        const response = await authServices.sendCredentialsForLogin(user);
+        if (!response.status) {
+            invokeAlert('Error!', response.error, 'info', 'Entendido', '#2280E5');
+        } else {
+            authStore.setAuthUser(response.user);
+            authStore.setAccessToken(response.accessToken);
 
-    if (response == undefined) {
-        return alert('Credenciales invalidad');
+            alertProccessSuccess(response.message)
+
+            correo.value = undefined
+            password.value = undefined
+
+            setTimeout(() => {
+                if (authStore.authUser.rol === 3) {
+                    router.push({ name: 'dashboard-estudiante' })
+                }
+
+                if (authStore.authUser.rol === 2) {
+                    router.push({ name: 'dashboard-admin' })
+                }
+
+
+                if (authStore.authUser.rol === 1) {
+                    router.push({ name: 'dashboard-super' })
+                }
+            }, 1500)
+        }
+
+
+
+    } catch (error) {
+        console.error(error);
     }
-
-    
-
-    router.push({ name: 'dashboard-estudiante' })
-
-    correo.value = undefined
-    password.value = undefined
-
 }
 
 
@@ -89,9 +115,9 @@ const handleComponent = () => {
 
 // variables para manejar el ojo de el input clave
 const showPass = ref(false);
-let colorEye = ref(true); 
+let colorEye = ref(true);
 // funcion para manejar el ojo de ver la contraseña
-const showKey = () =>{    
+const showKey = () => {
     showPass.value = !showPass.value;
     colorEye.value = !colorEye.value;
 }
@@ -116,7 +142,7 @@ const showKey = () =>{
 }
 
 .logo_login {
-    width: 25%;
+    width: 15%;
 }
 
 .myLink {
@@ -134,15 +160,15 @@ const showKey = () =>{
     color: rgb(162, 167, 170);
 }
 
-.inputs{
+.inputs {
     border-color: #3b3b3b4f;
 }
 
-.caja{
+.caja {
     position: relative;
 }
 
-.ojo{
+.ojo {
     position: absolute;
     z-index: 10;
     right: 0;
@@ -155,7 +181,7 @@ const showKey = () =>{
     text-align: center;
 }
 
-.ojoo{
+.ojoo {
     position: absolute;
     z-index: 10;
     right: 0;
@@ -168,7 +194,7 @@ const showKey = () =>{
     text-align: center;
 }
 
-.ojo:hover{
+.ojo:hover {
     color: var(--maincolor-green);
 }
 </style>
