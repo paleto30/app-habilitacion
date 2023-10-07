@@ -13,7 +13,8 @@
   --colorfocus-link: rgb(43, 135, 221);
   --alert-success: #d0f3cf;
   --alert-advertence: rgba(190, 240, 143, 0.664);
-  --text-advertence:var(--fontcolor-dark)
+  --text-advertence:var(--fontcolor-dark);
+  --color--buttonAlert: '#2280E5'; 
 }
 
 
