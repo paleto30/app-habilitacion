@@ -5,7 +5,7 @@
             <div>
                 <h2 class="text-center mt-3">Registrarse</h2>
             </div>
-            <img src="../../../assets/logo.svg" class="logo_login" alt="" srcset="">
+            <img src="../../../assets/Manzanavector.svg" class="logo_login" alt="" srcset="">
         </div>
 
         <form class="p-md-2 container" @submit.prevent="handleFormData">
@@ -95,13 +95,8 @@
                     <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
                         uso al ingresar en este aplicativo</div>
                 </div>
-
             </div>
-
         </form>
-    </div>
-    <div v-if="showAlert">
-        <AlertComponentVue :message="message" :state="state" />
     </div>
 </template>
 
@@ -112,14 +107,10 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import authServices from '../service/authServices.js';
-import AlertComponentVue from '../../../shared/components/AlertComponent.vue';
+import { invokeAlert } from '../../../shared/js/alertabase.js';
 
 
 
-// alert
-const showAlert = ref(false)
-const message = ref("");
-const state = ref(true);
 
 
 // sedes
@@ -226,8 +217,6 @@ const showKey = () => {
 
 
 
-
-
 /* limpiar formulario */
 function restartForm() {
     sede.value = null
@@ -257,29 +246,24 @@ const handleFormData = async () => {
         id_carrera: Number(carrera.value)
     }
 
-    const results = await authServices.sendCredentialsForLogin(dataToSend);
+    const results = await authServices.sendCredentialsForRegister(dataToSend);
+    console.log(results);
 
     if (!results.status) {
-        showAlert.value = !showAlert.value;
-        state.value = results.status;
-        message.value = results.error;
-        setTimeout(() => {
-            showAlert.value = !showAlert.value
-        }, 2500)
-    } else {
-        showAlert.value = !showAlert.value
-        state.value = results.status
-        message.value = results.message
-        setTimeout(() => {
-            showAlert.value = !showAlert.value
-        }, 2200)
-        restartForm()
+        // alerta de error
+        invokeAlert('Error!', results.error, 'error', 'Entendido', '#2280E5');
+        return;
     }
 
 
+    // alerta de success
+    invokeAlert('Excelente!', results.message, 'success', 'Entendido', '#2280E5');
+    restartForm()
 
+    setTimeout(() => {
+        router.push({ name: 'login' })
+    }, 2000)
 }
-
 
 
 </script>
@@ -314,11 +298,13 @@ const handleFormData = async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 20px;
+    margin-top: 16px;
+    gap: 20px;
+    margin-bottom: 10px;
 }
 
 .logo_login {
-    width: 18%;
+    width: 13%;
 }
 
 .myLink {
@@ -380,7 +366,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .ojo:hover {
     color: var(--maincolor-green);
 }
-
 
 
 .defaults {
