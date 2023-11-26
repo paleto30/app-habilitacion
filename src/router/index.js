@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../modules/authentication/stores/authStore.js';
-// import authStudentGuard from './authStudentGuard.js';
-// import authAdminGuard from './authAdminGuard.js';
-
-
+import authRutes from '../modules/authentication/routes/authRoutes.js';
+import studentsRoutes from '../modules/dashboard/routes/studentsRoutes.js';
+import superRoutes from '../modules/dashboard-super/routes/superRoutes.js';
+import adminRoutes from '../modules/dashboard-admin/routes/adminRoutes.js';
+import ErrorView from '../shared/view/ErrorView.vue';
 
 const routes = [
   {
@@ -12,52 +13,20 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/authentication/login'
+    name: 'error',
+    component: ErrorView
+    //redirect: '/authentication/login'
   },
-  {
-    path: '/authentication',
-    name: 'authentication',
-    redirect: '/authentication/login',
-    component: () => import('../modules/authentication/views/authenticationView.vue'),
-    children: [
-      {
-        path: 'login',
-        component: () => import('../modules/authentication/components/FormLogin.vue'),
-        name: 'login',
-      },
-      {
-        path: 'register',
-        component: () => import('../modules/authentication/components/FormRegister.vue'),
-        name: 'register',
-      },
-      {
-        name: 'admin',
-        path: 'admin/view/register',
-        component: () => import('../modules/authentication/components/FormRegisterAdmin.vue')
-      }
-    ]
-  },
-  {
-    path: '/dashboard-estudiante',
-    name: 'dashboard-estudiante',
-    component: () => import('../modules/dashboard/view/DashboardEstudianteView.vue'),
-    meta: { requiresAuth: true, role: 3 }
-    //beforeEnter: [authStudentGuard]
-  },
-  {
-    path: '/dashboard-admin',
-    name: 'dashboard-admin',
-    component: () => import('../modules/dashboard-admin/view/DashboardAdminView.vue'),
-    meta: { requiresAuth: true, role: 2  }
-    //beforeEnter: [authAdminGuard]
-  },
-  {
-    path: '/dashboard-super',
-    name: 'dashboard-super',
-    component: ()=> import('../modules/dashboard-admin/view/DashboardAdminView.vue'),
-    meta: {requiresAuth: true , role: 1}
-  }
 ]
+
+
+// aregamos las demas rutas al array de rutas principal
+Array.prototype.push.apply(routes, authRutes);
+Array.prototype.push.apply(routes, studentsRoutes);
+Array.prototype.push.apply(routes, adminRoutes);
+Array.prototype.push.apply(routes, superRoutes);
+
+
 
 
 
@@ -67,11 +36,12 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth); // esto retorna true si la ruta requiere auth
   const isAutenticated = useAuthStore().authUser !== null;  // esto tendra el valor de true si el usuario ya esta auten
   const role = to.matched.some(record => record.meta.role);
   const rol = role ? to.matched.find(record => record.meta.role).meta.role : null
+
 
   if ((requiresAuth && !isAutenticated) || (role && rol !== useAuthStore().authUser.rol)) {
     next({ name: 'login' });
