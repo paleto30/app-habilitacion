@@ -11,7 +11,7 @@ import { useAuthStore } from "../stores/authStore.js";
 const sendCredentialsForLogin = async (usuario) => {
     try {
 
-        const request = await fetch(`${baseUrl}/iniciar-sesion`, {
+        const request = await fetch(`${baseUrl}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const sendCredentialsForLogin = async (usuario) => {
 */
 const sendCredentialsForRegister = async (formData) => {
     try {
-        const request = await fetch(`${baseUrl}/registrarse`, {
+        const request = await fetch(`${baseUrl}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ const sendFormDataForAdminRegister = async (formData) => {
 */
 const getAvailablesSedes = async () => {
     try {
-        const data = await fetch(`${baseUrl}/sedes`);
+        const data = await fetch(`${baseUrl}/campus`);
         const result = await data.json();
 
         if (!result.status) {
@@ -97,7 +97,7 @@ const getAvailablesSedes = async () => {
 */
 const getAvailablesFacultades = async (id_sede) => {
     try {
-        const data = await fetch(`${baseUrl}/sede/${id_sede}/facultades`);
+        const data = await fetch(`${baseUrl}/campus/${id_sede}/faculties`);
         const result = await data.json();
 
         if (!result.status) {
@@ -119,7 +119,7 @@ const getAvailablesFacultades = async (id_sede) => {
 const getAvailablesCoordinaciones = async (id_facultad) => {
     try {
 
-        const data = await fetch(`${baseUrl}/facultad/${id_facultad}/coordinaciones`)
+        const data = await fetch(`${baseUrl}/faculties/${id_facultad}/coordinations`)
         const result = await data.json();
 
         if (!result.status) {
@@ -139,7 +139,7 @@ const getAvailablesCoordinaciones = async (id_facultad) => {
 */
 const getAvailablesCarreras = async (id_coordinacion) => {
     try {
-        const data = await fetch(`${baseUrl}/coordinacion/${id_coordinacion}/carreras`)
+        const data = await fetch(`${baseUrl}/coordinations/${id_coordinacion}/careers`)
         const result = await data.json();
 
         if (!result.status) {
