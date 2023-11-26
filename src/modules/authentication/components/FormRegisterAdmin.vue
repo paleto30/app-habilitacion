@@ -223,7 +223,7 @@ const handleFormData = async () => {
     }
 
     const results = await authServices.sendFormDataForAdminRegister(dataToSend);
-    console.log(results);
+
 
     if (!results.status) {
         // alerta de error
