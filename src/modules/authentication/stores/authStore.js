@@ -13,7 +13,6 @@ export const useAuthStore = defineStore('auth',{
         getAuthUser: (state) => state.authUser,
     },
 
-
     actions:{
 
         setAccessToken(token){
@@ -24,6 +23,10 @@ export const useAuthStore = defineStore('auth',{
             this.authUser = authUser;
         },
 
+        setStoreAuthNull(){
+            this.accessToken = null;
+            this.authUser = null;
+        }
     },
     persist:{
         storage: sessionStorage,
