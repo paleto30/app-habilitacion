@@ -11,12 +11,12 @@
             <div class="row mb-1 mb-md-3">
                 <div class="mb-1 mb-md-3">
                     <input type="email" class="form-control text-center inputs" id="correo" v-model="correo"
-                        placeholder="Correo institucional">
+                        placeholder="Correo institucional" required>
                 </div>
                 <div class="mb-1 mb-md-3 caja">
                     <span class="icon-eye" :class="{ 'ojo': colorEye, 'ojoo': !colorEye }" @click="showKey"></span>
                     <input :type="showPass ? 'text' : 'password'" class="form-control text-center inputs" v-model="password"
-                        placeholder="Contraseña" id="pass">
+                        placeholder="Contraseña" id="pass" required>
                 </div>
             </div>
             <div class="mt-4 d-flex justify-content-center">
@@ -57,7 +57,7 @@ const password = ref('');
 const handleFormData = async () => {
 
     if (!correo.value || !password.value || !correo.value.trim() || !password.value.trim()) {
-        invokeAlert('Aviso!', 'Ningun campo puede estar vacio', 'warning', 'Entendido', '#2280E5')
+        invokeAlert('', 'Ingrese las credenciales de accesso', 'warning', 'Entendido', '#2280E5')
         return
     }
 
@@ -84,6 +84,7 @@ const handleFormData = async () => {
                     router.push({ name: 'dashboard-estudiante' })
                 }
 
+
                 if (authStore.authUser.rol === 2) {
                     router.push({ name: 'dashboard-admin' })
                 }
@@ -94,9 +95,6 @@ const handleFormData = async () => {
                 }
             }, 1500)
         }
-
-
-
     } catch (error) {
         console.error(error);
     }

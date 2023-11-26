@@ -15,16 +15,14 @@
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <select class="form-select text-center inputs" v-model="sede" id="sede" @change="loadFacultades">
                         <option value="null" selected class="defaults">Seleccione la Sede</option>
-                        <option class="text-start" v-for="item in sedes" :key="item.id" :value="item.id">{{ item.nombre }}
-                        </option>
+                        <option class="text-start" v-for="item in sedes" :key="item.id" :value="item.id">{{ item.nombre }}</option>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
                     <select class="form-select text-center inputs" v-model="facultad" :disabled="!sede || sede === 'null'"
                         @change="loadCoordinaciones">
                         <option value="null" selected class="defaults">Seleccione la Facultad</option>
-                        <option class="text-start" v-for="item in facultades" :key="item.id" :value="item.id"> {{
-                            item.codigo }}</option>
+                        <option class="text-start" v-for="item in facultades" :key="item.id" :value="item.id"> {{ item.codigo }}</option>
                     </select>
                 </div>
             </div>
@@ -34,16 +32,14 @@
                     <select class="form-select text-center inputs" v-model="coordinacion"
                         :disabled="!facultad || facultad === 'null'" @change="loadCarreras">
                         <option value="null" selected class="defaults">Seleccione la Coordinación</option>
-                        <option class="text-start" v-for="item in coordinaciones" :key="item.id" :value="item.id">{{
-                            item.nombre }}</option>
+                        <option class="text-start" v-for="item in coordinaciones" :key="item.id" :value="item.id">{{ item.nombre }}</option>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
                     <select class="form-select text-center inputs" v-model="carrera"
                         :disabled="!coordinacion || coordinacion === 'null'" required>
                         <option value="null" selected class="defaults">Seleccione la carrera</option>
-                        <option class="text-start" v-for="item in carreras" :key="item.id" :value="item.id">{{ item.nombre
-                        }}</option>
+                        <option class="text-start" v-for="item in carreras" :key="item.id" :value="item.id">{{ item.nombre }}</option>
                     </select>
                 </div>
             </div>
@@ -247,7 +243,6 @@ const handleFormData = async () => {
     }
 
     const results = await authServices.sendCredentialsForRegister(dataToSend);
-    console.log(results);
 
     if (!results.status) {
         // alerta de error
