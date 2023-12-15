@@ -32,11 +32,11 @@ export const getSubjectAvailables = async () => {
 */
 export const getTeachersForSubject = async (id_materia) => {
     try {
-        const request = await fetch (`${baseUrl}/student//student-subjects/${id_materia}/teacher`,{
+        const request = await fetch (`${baseUrl}/student/student-subjects/${id_materia}/teacher`,{
             method: 'GET',
             headers:{
                 'Content-Type': 'application/json',
-                //'Authorization': `Bearer ${useAuthStore().accessToken}`
+                'Authorization': `Bearer ${useAuthStore().accessToken}`
             }
         });
         const response = await request.json();

@@ -10,7 +10,7 @@ export const invokeAlert = (title, text, icon, textButton, buttonColor) => {
         text: text,
         icon: icon,
         confirmButtonText: textButton,
-        confirmButtonColor: buttonColor
+        confirmButtonColor: buttonColor || '#3FC3EE'
     })
 }
 

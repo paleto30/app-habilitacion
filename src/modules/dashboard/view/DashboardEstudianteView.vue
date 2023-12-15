@@ -63,7 +63,9 @@
 
             <!-- espacio donde va el formulario o las tablas -->
             <div class="contenido">
-                <router-view />
+                <div class="fondoContent">
+                    <router-view />
+                </div>
             </div>
         </section>
     </div>
@@ -92,6 +94,10 @@ const itmes = [
         icon: 'icon-history'
     },
 ];
+
+
+
+
 
 </script>
 
@@ -144,15 +150,22 @@ const itmes = [
     width: calc(100% - 250px);
     height: calc(100vh - 65px);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    background: linear-gradient(to right,rgba(81, 56, 126, 0.678), rgba(32, 112, 79, 0.678)),
-    url(../../../assets/xd.jpg) no-repeat center center fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
+   
 }
 
+
+.fondoContent{
+    width: 100%;
+    height: 100%;
+    padding: 0px 0px;
+    background: linear-gradient(to right, rgba(81, 56, 126, 0.678), rgba(32, 112, 79, 0.678)),
+        url(../../../assets/xd.jpg) no-repeat center center fixed;
+    background-size: auto;
+    background-repeat: no-repeat;
+}
 
 
 .burger {
