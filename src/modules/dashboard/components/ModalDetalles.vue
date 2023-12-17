@@ -1,9 +1,8 @@
 <!-- html -->
 <template>
     <!-- Button trigger modal -->
-    <spam class="icon-info-circled boton" data-bs-toggle="modal" data-bs-target="#exampleModal" title="mostrar detalles">
-    </spam>
-    
+    <span class="icon-info-circled boton" data-bs-toggle="modal" data-bs-target="#exampleModal" title="mostrar detalles">
+    </span>
 </template>
 
 
@@ -40,9 +39,6 @@
 
 .cellsM {
     border: solid;
-    border-radius: 10px; 
+    border-radius: 10px;
 }
-
-
-
 </style>
