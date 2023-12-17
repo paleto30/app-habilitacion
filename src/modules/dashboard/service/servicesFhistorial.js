@@ -1,14 +1,12 @@
 import { useAuthStore } from "../../authentication/stores/authStore.js";
+const baseUrl = import.meta.env.VITE_API_GETWAY;
 
-
-
-const baseUrl = 'http://localhost:5500';
 
 
 
 export const getRequestHistory = async () => {
     try {
-        const request = await fetch(`${baseUrl}/api/v1/student/request-history/`,{
+        const request = await fetch(`${baseUrl}/student/request-history/`,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

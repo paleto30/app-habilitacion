@@ -4,7 +4,7 @@
         <table class="table text-center table-hover tabla custom-scrollbar">
             <thead class="table-dark">
                 <tr class="cabeza-tabla">
-                    <th scope="col" class="celTopLeft">#ID</th>
+                    <th scope="col" class="celTopLeft">#</th>
                     <th scope="col">REFERENCIA</th>
                     <th scope="col">MATERIA</th>
                     <th scope="col">FECHA APROBACION</th>
@@ -13,7 +13,7 @@
             </thead>
             <tbody class="bodyTable">
                 <tr v-for="(item, i) in dataPaginate" :key="i" :data-row="item.id">
-                    <th scope="col">{{ item.id }}</th>
+                    <th scope="col">{{ i+1 }}</th>
                     <td scope="col">{{ item.referencia_pago }}</td>
                     <td scope="col">{{ item.materia }}</td>
                     <td scope="col">{{ item.fecha_aprobacion }}</td>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="cards">
-        <CardRowTable v-for="(item, i) in dataPaginate" :key="i" class="cajitas" :datos="item" />
+        <CardRowTable v-for="(item, i) in dataPaginate" :key="i" class="cajitas" :datos="item" :num="i" />
     </div>
 
     <nav aria-label="Page navigation example">
@@ -79,6 +79,7 @@ const dataPaginate = ref([]);
 const itemsPerPage = 10;
 const currentPage = ref(1);
 const detalle = ref(); 
+
 
 
 onBeforeMount(() => {
@@ -138,7 +139,7 @@ const renderItem = (item) => {
 <style scoped>
 .caja {
     width: 90%;
-    max-height: 23.6rem;
+    max-height: 26.6rem;
     overflow-y: auto;
     margin-bottom: 1rem;
 }
@@ -150,12 +151,13 @@ const renderItem = (item) => {
 
 .cards {
     display: none;
-    width: 90%;
+    width: 95%;
     margin-bottom: 1rem;
+
 }
 
 .cajitas {
-    margin-bottom: .2rem;
+    margin-bottom: .5rem;
 }
 
 .cabeza-tabla {
@@ -226,8 +228,8 @@ td {
 @media (min-width: 390px) {
 
     .cards {
-        height: 40rem;
-        margin-top: 5px;
+        height: 45rem;
+        margin-top: 2rem;
     }
 }
 

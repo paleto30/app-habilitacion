@@ -1,9 +1,5 @@
-
-const baseUrl = 'http://localhost:5500/api/v1/authentication';
-//const baseUrl = 'https://sqfb9lfn-5500.use2.devtunnels.ms/api/v1/authentication'
 import { useAuthStore } from "../stores/authStore.js";
-
-
+const baseUrl = import.meta.env.VITE_API_GETWAY;
 
 /*
     funcion para realizar la accion de iniciar sesion en eel sistema
@@ -11,7 +7,7 @@ import { useAuthStore } from "../stores/authStore.js";
 const sendCredentialsForLogin = async (usuario) => {
     try {
 
-        const request = await fetch(`${baseUrl}/login`, {
+        const request = await fetch(`${baseUrl}/authentication/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +28,7 @@ const sendCredentialsForLogin = async (usuario) => {
 */
 const sendCredentialsForRegister = async (formData) => {
     try {
-        const request = await fetch(`${baseUrl}/register`, {
+        const request = await fetch(`${baseUrl}/authentication/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +50,7 @@ const sendCredentialsForRegister = async (formData) => {
 */
 const sendFormDataForAdminRegister = async (formData) => {
     try {
-        const request = await fetch(`${baseUrl}/register/user-admin`, {
+        const request = await fetch(`${baseUrl}/authentication/register/user-admin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +74,7 @@ const sendFormDataForAdminRegister = async (formData) => {
 */
 const getAvailablesSedes = async () => {
     try {
-        const data = await fetch(`${baseUrl}/campus`);
+        const data = await fetch(`${baseUrl}/authentication/campus`);
         const result = await data.json();
 
         if (!result.status) {
@@ -97,7 +93,7 @@ const getAvailablesSedes = async () => {
 */
 const getAvailablesFacultades = async (id_sede) => {
     try {
-        const data = await fetch(`${baseUrl}/campus/${id_sede}/faculties`);
+        const data = await fetch(`${baseUrl}/authentication/campus/${id_sede}/faculties`);
         const result = await data.json();
 
         if (!result.status) {
@@ -119,7 +115,7 @@ const getAvailablesFacultades = async (id_sede) => {
 const getAvailablesCoordinaciones = async (id_facultad) => {
     try {
 
-        const data = await fetch(`${baseUrl}/faculties/${id_facultad}/coordinations`)
+        const data = await fetch(`${baseUrl}/authentication/faculties/${id_facultad}/coordinations`)
         const result = await data.json();
 
         if (!result.status) {
@@ -139,7 +135,7 @@ const getAvailablesCoordinaciones = async (id_facultad) => {
 */
 const getAvailablesCarreras = async (id_coordinacion) => {
     try {
-        const data = await fetch(`${baseUrl}/coordinations/${id_coordinacion}/careers`)
+        const data = await fetch(`${baseUrl}/authentication/coordinations/${id_coordinacion}/careers`)
         const result = await data.json();
 
         if (!result.status) {
