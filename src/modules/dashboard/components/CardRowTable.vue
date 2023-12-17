@@ -1,6 +1,6 @@
 <!-- html -->
 <template>
-    <div class="card" style="width: 18rem;">
+     <div class="card" style="width: 100%">
         <div class="card-header">
             Featured
         </div>
@@ -15,6 +15,11 @@
 
 <!-- Js -->
 <script setup>
+
+
+
+
+
 
 </script>
 
