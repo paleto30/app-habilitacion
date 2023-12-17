@@ -150,9 +150,6 @@ const handleFormData = async (e) => {
 
 
 
-
-
-
 </script>
 
 
@@ -165,7 +162,7 @@ const handleFormData = async (e) => {
 
 
 .form {
-    width: 100%;
+    width: 95%;
     /* background-color: rgba(233, 239, 240, 0.863); */
     background-color: rgb(255, 255, 255);
 }
@@ -188,7 +185,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 .fonts{
-    font-size: 18px;
+    font-size: 17px;
 }
 
 

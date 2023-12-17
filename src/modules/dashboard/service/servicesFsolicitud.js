@@ -1,6 +1,6 @@
 import { useAuthStore } from "../../authentication/stores/authStore";
+const baseUrl = import.meta.env.VITE_API_GETWAY;
 
-const baseUrl = 'http://localhost:5500/api/v1';
 
 
 
@@ -19,7 +19,6 @@ export const getSubjectAvailables = async () => {
                 'Authorization': `Bearer ${useAuthStore().accessToken}`
             }
         });
-
         const response = await request.json();
         return response;
     } catch (error) {
