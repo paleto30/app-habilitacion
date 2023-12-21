@@ -19,7 +19,7 @@
         </div>
         <div class="row text-start">
             <div class="col-6 py-2"><strong>Fecha de aprovación:</strong></div>
-            <div class="col-6 py-2">{{ props.detalle.fecha_aprobacion }}</div>
+            <div class="col-6 py-2">{{ new Date(props.detalle.fecha_aprobacion).toLocaleDateString('es-ES') }}</div>
         </div>
     </div>
 </template>

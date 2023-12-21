@@ -2,7 +2,7 @@
 <template>
     <div class="card" style="width: 100%">
         <div class="card-header bg-dark text-light">
-            Informacion de solicitud 
+            Informacion de solicitud
         </div>
         <div class="container-fluid">
             <table class="w-100 table miTabla">
@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <th>Fecha aprovación:</th>
-                    <td>{{ props.datos.fecha_aprobacion }}</td>
+                    <td>{{ new Date(props.datos.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>
                 </tr>
             </table>
         </div>
@@ -35,7 +35,7 @@
 <!-- Js -->
 <script setup>
 
-const props = defineProps(['datos','num']);
+const props = defineProps(['datos', 'num']);
 </script>
 
 

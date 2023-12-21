@@ -16,7 +16,7 @@
                     <th scope="col">{{ i+1 }}</th>
                     <td scope="col">{{ item.referencia_pago }}</td>
                     <td scope="col">{{ item.materia }}</td>
-                    <td scope="col">{{ item.fecha_aprobacion }}</td>
+                    <td scope="col">{{ new Date(item.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>
                     <td scope="col">
                         <ModalDetalles @click="renderItem(item)" />
                     </td>
@@ -84,6 +84,7 @@ const detalle = ref();
 
 onBeforeMount(() => {
     getDataPage(1);
+    console.log(dataPaginate);
 })
 
 // funcion para obtener el total de paginas segun la cantidad de registros del hostirial
