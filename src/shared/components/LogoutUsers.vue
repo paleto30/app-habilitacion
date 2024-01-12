@@ -3,7 +3,7 @@
     <!-- Default dropup button -->
     <div class="btn-group dropup w-100">
         <button type="button" class="btn dropdown-toggle w-100 boton" data-bs-toggle="dropdown" aria-expanded="false">
-            <div><span class="icon-user me-3"></span>{{ nameUser }}</div>
+            <div class="nameUser"><span class="icon-user me-3"></span>{{ nameUser }}</div>
         </button>
         <ul class="dropdown-menu w-100">
             <!-- Dropdown menu links -->
@@ -82,11 +82,16 @@ function formatNames(names, lastName) {
 
 
 .botonExit {
-    /* border: .1px solid rgb(126, 125, 125); */
+    border: .1px solid rgba(126, 125, 125, 0.178);
     width: 100%;
     text-decoration: none;
     color: black;
     text-align: start;
-    font-size: 15px;
+    font-size: 14px;
+}
+
+
+.nameUser{
+    font-size: 14px;
 }
 </style>
