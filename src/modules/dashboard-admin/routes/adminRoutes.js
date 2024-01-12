@@ -6,17 +6,17 @@ const adminRoutes = [
         path: '/dashboard-admin',
         name: 'dashboard-admin',
         component: () => import('../view/DashboardAdminView.vue'),
-        redirect: { name: 'dash-admin' },
+        redirect: { name: 'view-estudiantes' },
         children:[
             {
-                path: 'algo',
-                name: 'dash-admin',
-                component: () => import('../components/MyComponent.vue')
+                path: 'estuiantes',
+                name: 'view-estudiantes',
+                component: () => import('../view/EstudiantesView.vue')
             },
             {
-                path: 'otro',
-                name: 'profes',
-                component: () => import('../components/MyOther.vue')
+                path: 'Habilitaciones',
+                name: 'view-habilitacion',
+                component: () => import('../view/HabilitacionesView.vue')
             },
         ],
         meta: { requiresAuth: true, role: 2 },
