@@ -15,7 +15,7 @@
                 <button class="my-btn btn-s" @click="animateBtn" id="btnS"  :disabled="!filter || filter === 'null'">
                     <span class="icon-search" style="color: black;"></span>
                 </button>
-                <button class="my-btn btn-r" @click="removeFilter" id="btnR">
+                <button class="my-btn btn-r" @click="removeFilter" id="btnR" >
                     <span class="icon-cancel" style="color: black;"></span>
                 </button>
             </div>
@@ -37,6 +37,11 @@ const filter = ref(null);
 
 // funcion para animar el boton de buscar
 function animateBtn() {
+
+    if (textSearch.value === ''){
+        return;
+    }
+
     const btns = document.querySelector('#btnS');
     btns.classList.add('clicked');
     

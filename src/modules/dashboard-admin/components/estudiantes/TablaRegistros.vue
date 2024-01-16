@@ -2,7 +2,7 @@
 <template>
     <!-- superior -->
     <div class="superior">
-        <FiltrosTablaEstudiantes :filters="filtros" @searchRecord="sendFilters" @removeFilters="delFilters"/>
+        <FiltrosTablaEstudiantes :filters="filtros" @searchRecord="sendFilters" @removeFilters="delFilters" />
     </div>
 
     <!-- tabla  -->
@@ -21,8 +21,8 @@
                 </tr>
             </thead>
             <tbody class="cuerpo-t overflow-auto">
-                <tr v-for="(v, i) in estudiantes" :key="i">
-                    <td class="rows">{{ v.id }}</td>
+                <tr v-for="(v, i) in estudiantes" :key="i + 1" :data-register="v.id">
+                    <td class="rows">{{ i + 1 }}</td>
                     <td class="rows">{{ v.identificacion }}</td>
                     <td class="rows">{{ v.apellido }}</td>
                     <td class="rows">{{ v.nombre }}</td>
@@ -37,7 +37,8 @@
 
     <!-- inferior -->
     <div class="inferior">
-        <PaginacionTabla  :current_page="current_page" :total_page="total_page"/>
+        <PaginacionTabla v-if="current_page" :current_page="current_page" :total_page="total_page" :total_r="total_rec" :total_r_f="total_found"
+            @changePage="getNewSetOfRecords" @changeNumPage="getDataForNumPage" @getAmount="setAmountRows" />
     </div>
 </template>
 
@@ -52,23 +53,28 @@ import PaginacionTabla from '../estudiantes/PaginacionTabla.vue';
 
 const estudiantes = ref([]);
 
-const current_page = ref();
+const current_page = ref(1);
+const amount = ref(15);
 const total_page = ref();
-
+const total_rec = ref();
+const total_found = ref();
 
 
 onMounted(() => {
-    getStudentListToTable();
+    getStudentListToTable(current_page.value, amount.value);
 })
 
+
+
 // obtener el primer listado 
-const getStudentListToTable = async () => {
+const getStudentListToTable = async (page, amount , objFilte = null) => {
     try {
-        const date = await getStudentList();
-        console.log(date);
+        const date = await getStudentList(page, amount, objFilte);
         estudiantes.value = date.studentList;
         current_page.value = date.current_page;
         total_page.value = date.total_page;
+        total_rec.value = date.total_records;
+        total_found.value = date.total_records_found;
     } catch (error) {
         console.log(error);
     }
@@ -102,10 +108,7 @@ const filtros = [
 // evento cuando el componente de filtros nos envia un filtro
 const sendFilters = async (filter, textSearch) => {
     try {
-        const found = await getStudentList( undefined , undefined, {filter, value: textSearch});
-        estudiantes.value = found.studentList;
-        current_page.value = found.current_page;
-        total_page.value = found.total_page;
+        getStudentListToTable(current_page.value, amount.value, { filter, value: textSearch });
     } catch (error) {
         console.log(error);
     }
@@ -114,14 +117,56 @@ const sendFilters = async (filter, textSearch) => {
 
 
 // eventos cuando el componente de filtros quita los filtros
-const delFilters = () =>{
+const delFilters = () => {
     try {
-        getStudentListToTable();
+        getStudentListToTable(current_page.value, amount.value);
     } catch (error) {
         console.log(error);
     }
 }
 
+
+const getNewSetOfRecords = async (page) => {
+    try {
+        switch (page) {
+            case 'previous':
+                if (current_page.value > 1) {
+                    current_page.value--;
+                    getStudentListToTable(current_page.value, amount.value);
+                }
+                break;
+            case 'next':
+                if (current_page.value < total_page.value) {
+                    current_page.value++;
+                    getStudentListToTable(current_page.value, amount.value);
+                }
+                break;
+            default:
+                break;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const getDataForNumPage = async (numPage) => {
+    try {
+        current_page.value = numPage;
+        getStudentListToTable(current_page.value, amount.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const setAmountRows = async (cantidad) => {
+    try {
+        amount.value = cantidad;
+        getStudentListToTable(current_page.value,amount.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
 </script>
 
 
@@ -152,6 +197,9 @@ const delFilters = () =>{
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     border-top: 0.1px solid rgb(204, 204, 204);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
