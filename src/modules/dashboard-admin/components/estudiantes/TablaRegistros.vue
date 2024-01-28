@@ -2,6 +2,7 @@
 <template>
     <!-- superior -->
     <div class="superior">
+        <h3>Estudiantes</h3>
         <FiltrosTablaEstudiantes :filters="filtros" @searchRecord="sendFilters" @removeFilters="delFilters" />
     </div>
 
@@ -21,8 +22,8 @@
                 </tr>
             </thead>
             <tbody class="cuerpo-t overflow-auto">
-                <tr v-for="(v, i) in estudiantes" :key="i + 1" :data-register="v.id">
-                    <td class="rows">{{ i + 1 }}</td>
+                <tr v-for="v in estudiantes" :key="v.id" :data-register="v.id" class="focus-row">
+                    <td class="rows p-2 ">{{ v.id }}</td>
                     <td class="rows">{{ v.identificacion }}</td>
                     <td class="rows">{{ v.apellido }}</td>
                     <td class="rows">{{ v.nombre }}</td>
@@ -50,6 +51,7 @@ import { onMounted, ref } from 'vue';
 import { getStudentList } from '../../service/EstudiantesService.js';
 import FiltrosTablaEstudiantes from '../estudiantes/FiltrosTablaEstudiantes.vue';
 import PaginacionTabla from '../estudiantes/PaginacionTabla.vue';
+import { invokeAlert } from '../../../../shared/js/alertabase';
 
 const estudiantes = ref([]);
 
@@ -69,12 +71,22 @@ onMounted(() => {
 // obtener el primer listado 
 const getStudentListToTable = async (page, amount , objFilte = null) => {
     try {
-        const date = await getStudentList(page, amount, objFilte);
-        estudiantes.value = date.studentList;
-        current_page.value = date.current_page;
-        total_page.value = date.total_page;
-        total_rec.value = date.total_records;
-        total_found.value = date.total_records_found;
+        const info = await getStudentList(page, amount, objFilte);
+        const response = info.response; 
+        console.log(info);
+        if(!info.status){
+            invokeAlert('Aviso',`${info.error}`, 'warning', 'Entendido');
+        }
+
+        if(response.total_records_found == 0 ){
+            invokeAlert(null,`No se encontraron registros`, 'info', 'Entendido')
+        }
+
+        estudiantes.value = response.studentList;
+        current_page.value = response.current_page;
+        total_page.value = response.total_page;
+        total_rec.value = response.total_records;
+        total_found.value = response.total_records_found;
     } catch (error) {
         console.log(error);
     }
@@ -180,7 +192,8 @@ const setAmountRows = async (cantidad) => {
     border-top-right-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    color: rgb(88, 156, 10);
 }
 
 .centro {
@@ -221,16 +234,20 @@ const setAmountRows = async (cantidad) => {
 }
 
 .titles {
-    text-align: center;
+    text-align: start;
+    color: white;
 }
 
 .rows {
     border-bottom: 1px solid;
-    text-align: center;
+    text-align: start;
     height: 40px;
+    font-size: 13px;
 }
 
-
+.focus-row:hover{
+    background-color: rgb(231, 231, 231);
+}
 
 
 

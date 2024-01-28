@@ -8,8 +8,8 @@
             <div class="center_box">
                 <div>
                     <label for="" class="ms-1 colorpage">pagina</label>
-                    <input type="text" class="input_page colorpage" :value="current_page" @change="sentInput"
-                        @blur="emitNumPage">
+                    <input type="number" class="input_page colorpage" :value="current_page" @change="sentInput"
+                        @blur="emitNumPage" >
                     <label for="" class="ms-1 colorpage"> de {{ total_page }} </label>
                 </div>
             </div>
@@ -33,7 +33,7 @@
 <!-- Js -->
 <script setup>
 
-import { defineEmits, defineProps, ref, } from 'vue';
+import { ref } from 'vue';
 const props = defineProps(['current_page', 'total_page', 'total_r', 'total_r_f']);
 const emits = defineEmits(['changePage', 'changeNumPage', 'getAmount']);
 

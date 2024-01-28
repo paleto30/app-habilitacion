@@ -19,7 +19,7 @@ export const getStudentList = async (page = 1, amount = 15, objFilter = null) =>
             }
         });
         const results = await response.json();
-        return results.response;
+        return results;
     } catch (error) {
         return error;
     }
@@ -27,13 +27,3 @@ export const getStudentList = async (page = 1, amount = 15, objFilter = null) =>
 
 
 
-// obtener registros filtrados
-export const getStudentListFiltered = async (filtro, valor) => {
-    try {
-        const request = await fetch(`${url}?${filtro}=${valor}`);
-        const response = await request.json();
-        return response;
-    } catch (error) {
-        return error;
-    }
-}
