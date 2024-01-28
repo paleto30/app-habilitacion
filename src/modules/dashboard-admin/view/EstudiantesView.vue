@@ -18,7 +18,7 @@ import TablaRegistros from '../components/estudiantes/TablaRegistros.vue';
 <style scoped>
   .clase{
     /* color */
-    color: rgb(255, 255, 255);
+    
   /*   background-color: rgba(118, 255, 255, 0.247); */
     width: 100%;
     height: 100%;
