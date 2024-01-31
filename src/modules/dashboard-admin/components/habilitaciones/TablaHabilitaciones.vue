@@ -29,7 +29,8 @@
                     <td class="rows">{{ v.profesor }}</td>
                     <td class="rows">{{ v.fecha_aprovacion }}</td>
                     <td class="rows">
-                        <span class="icon-info-circled text-primary fs-5"></span>
+                        <span @click="getStudentInfo(v.id)" class="icon-info-circled fs-5 btnInfo" title="información"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"></span>
                     </td>
                 </tr>
             </tbody>
@@ -38,8 +39,32 @@
 
     <!-- inferior -->
     <div class="inferior">
-        <PaginacionTablaHabilitacion v-if="current_page" :current_page="current_page" :total_page="total_page" :total_r="total_rec" :total_r_f="total_found"
-            @changePage="getNewSetOfRecords" @changeNumPage="getDataForNumPage" @getAmount="setAmountRows"/>
+        <PaginacionTablaHabilitacion v-if="current_page" :current_page="current_page" :total_page="total_page"
+            :total_r="total_rec" :total_r_f="total_found" @changePage="getNewSetOfRecords"
+            @changeNumPage="getDataForNumPage" @getAmount="setAmountRows" />
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content ">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title " id="staticBackdropLabel">Detalles de habilitación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body cuerpoModal">
+                    <!-- aqui va el componente -->
+                    <section class="seccion1">
+                        <DetalleEstudiante :estudiante="estudiante" :carrera="carrera" />
+                        <DetalleProfesor :profesor="profesor" :materia="materia" />
+                    </section>
+                    <section class="seccion2">
+                       <!-- aqui va a ir el resto de la info  -->
+                    </section>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -48,12 +73,20 @@
 <script setup>
 
 import { onMounted, ref } from 'vue';
-import { getRecoveryList } from '../../service/HabilitacionService.js';
+import { getRecoveryList, getRecoveryDetails } from '../../service/HabilitacionService.js';
 import { invokeAlert } from '../../../../shared/js/alertabase.js';
 import FiltrosTablaHabilitaciones from './FiltrosTablaHabilitaciones.vue';
 import PaginacionTablaHabilitacion from './PaginacionTablaHabilitacion.vue'
-const habilitaciones = ref([]);
+import DetalleEstudiante from './DetalleEstudiante.vue';
+import DetalleProfesor from './DetalleProfesor.vue';
 
+
+const habilitaciones = ref([]);
+const estudiante = ref({});
+const profesor = ref({});
+const carrera = ref('');
+const materia = ref('');
+//const habilitacion = ref();
 const current_page = ref(1);
 const amount = ref(15);
 const total_page = ref();
@@ -65,6 +98,21 @@ onMounted(() => {
     getRecoveryListToTable(current_page.value, amount.value)
 })
 
+
+// funcion para cargar los datos de detalles de la habilitacion
+const getStudentInfo = async (id_recovery) => {
+    try {
+        const results = await getRecoveryDetails(id_recovery);
+        estudiante.value = results.response.estudiante;
+        const carrer = results.response.estudiante.carrera;
+        carrera.value = `(${carrer.codigo}) ${carrer.nombre} `;
+        profesor.value = results.response.profesor;
+        const subject = results.response.materia;
+        materia.value = `(${subject.codigo}) ${subject.nombre}     [${subject.creditos} creditos]`;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const getRecoveryListToTable = async (page, amount, objFilter = null) => {
     try {
@@ -158,7 +206,7 @@ const getDataForNumPage = async (numPage) => {
 const setAmountRows = async (cantidad) => {
     try {
         amount.value = cantidad;
-        getRecoveryListToTable(current_page.value,amount.value);
+        getRecoveryListToTable(current_page.value, amount.value);
     } catch (error) {
         console.log(error);
     }
@@ -234,9 +282,29 @@ const setAmountRows = async (cantidad) => {
 }
 
 
-.focus-row:hover{
+.focus-row:hover {
     background-color: rgb(231, 231, 231);
 }
+
+
+.btnInfo {
+    color: rgb(55, 185, 87);
+}
+
+.btnInfo:hover {
+    color: rgb(40, 150, 223);
+}
+
+.cuerpoModal {}
+
+
+
+.seccion1 {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 
 
 
