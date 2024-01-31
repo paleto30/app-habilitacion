@@ -73,7 +73,6 @@ const getStudentListToTable = async (page, amount , objFilte = null) => {
     try {
         const info = await getStudentList(page, amount, objFilte);
         const response = info.response; 
-        console.log(info);
         if(!info.status){
             invokeAlert('Aviso',`${info.error}`, 'warning', 'Entendido');
         }
