@@ -13,7 +13,7 @@
             </thead>
             <tbody class="bodyTable">
                 <tr v-for="(item, i) in dataPaginate" :key="i" :data-row="item.id">
-                    <th scope="col">{{ i+1 }}</th>
+                    <th scope="col">{{ item.id }}</th>
                     <td scope="col">{{ item.referencia_pago }}</td>
                     <td scope="col">{{ item.materia }}</td>
                     <td scope="col">{{ new Date(item.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>
@@ -56,7 +56,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <CardDetails v-if="detalle" :detalle="detalle"/>
+                    <CardDetails v-if="detalle" :detalle="detalle" />
                 </div>
             </div>
         </div>
@@ -67,29 +67,48 @@
 <!-- Js -->
 <script setup>
 
-import { defineProps, onBeforeMount, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ModalDetalles from '../components/ModalDetalles.vue';
 import CardRowTable from './CardRowTable.vue'
 import CardDetails from './CardDetails.vue';
-const props = defineProps(['lista'])
+import { getRequestHistory } from '../service/servicesFhistorial.js';
+import { invokeAlert } from '../../../shared/js/alertabase';
 
 
-const lista = props.lista;
+
+const lista = ref([]);
+
+
+onMounted(async () => {
+    await loadInitData();
+    getDataPage(1);
+})
+
+
+async function loadInitData() {
+    try {
+        const data = await getRequestHistory();
+
+        if (data.history.length < 1) {
+            invokeAlert('Aviso', 'No se encontraron registros en la tabla', 'warning')
+        }
+        lista.value = data.history;
+        console.log(lista.value);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//const lista = props.lista;
 const dataPaginate = ref([]);
 const itemsPerPage = 10;
 const currentPage = ref(1);
-const detalle = ref(); 
+const detalle = ref();
 
-
-
-onBeforeMount(() => {
-    getDataPage(1);
-    console.log(dataPaginate);
-})
 
 // funcion para obtener el total de paginas segun la cantidad de registros del hostirial
 const totalPaginas = () => {
-    return Math.ceil(lista.length / itemsPerPage);
+    return Math.ceil(lista.value.length / itemsPerPage);
 }
 
 
@@ -99,7 +118,7 @@ function getDataPage(nroPage) {
     dataPaginate.value = [];
     let init = (nroPage * itemsPerPage) - itemsPerPage;
     let end = (nroPage * itemsPerPage);
-    dataPaginate.value = lista.slice(init, end);
+    dataPaginate.value = lista.value.slice(init, end);
 }
 
 // pagina anterior
