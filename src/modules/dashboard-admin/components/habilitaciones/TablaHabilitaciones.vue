@@ -55,12 +55,15 @@
                 </div>
                 <div class="modal-body cuerpoModal">
                     <!-- aqui va el componente -->
-                    <section class="seccion1">
+                    <section class="seccion2 mb-2">
+                        <DetalleHabilitacion :habilitacion="habilitacion" />
+                    </section>
+                    <section class="seccion1 mb-2">
                         <DetalleEstudiante :estudiante="estudiante" :carrera="carrera" />
                         <DetalleProfesor :profesor="profesor" :materia="materia" />
                     </section>
-                    <section class="seccion2">
-                       <!-- aqui va a ir el resto de la info  -->
+                    <section class="seccion3">
+                        <DetalleArchivos :docs="docs" />
                     </section>
                 </div>
             </div>
@@ -79,6 +82,8 @@ import FiltrosTablaHabilitaciones from './FiltrosTablaHabilitaciones.vue';
 import PaginacionTablaHabilitacion from './PaginacionTablaHabilitacion.vue'
 import DetalleEstudiante from './DetalleEstudiante.vue';
 import DetalleProfesor from './DetalleProfesor.vue';
+import DetalleHabilitacion from './DetalleHabilitacion.vue';
+import DetalleArchivos from './DetalleArchivos.vue';
 
 
 const habilitaciones = ref([]);
@@ -86,7 +91,8 @@ const estudiante = ref({});
 const profesor = ref({});
 const carrera = ref('');
 const materia = ref('');
-//const habilitacion = ref();
+const habilitacion = ref({});
+const docs = ref({});
 const current_page = ref(1);
 const amount = ref(15);
 const total_page = ref();
@@ -108,7 +114,17 @@ const getStudentInfo = async (id_recovery) => {
         carrera.value = `(${carrer.codigo}) ${carrer.nombre} `;
         profesor.value = results.response.profesor;
         const subject = results.response.materia;
-        materia.value = `(${subject.codigo}) ${subject.nombre}     [${subject.creditos} creditos]`;
+        materia.value = `(${subject.codigo}) ${subject.nombre}   [${subject.creditos} creditos]`;
+        const recovery = {
+            referencia: results.response.referencia_pago,
+            fecha: new Date(results.response.created_at).toISOString().slice(0, 16)
+        }
+        habilitacion.value = recovery;
+        const doc = {
+            pdf: `${import.meta.env.VITE_API_GETWAY}/admins/view-pdf/${results.response.img_factura}`,
+            img: `${import.meta.env.VITE_API_GETWAY}/admins/view-image/${results.response.img_recibo_pago}`      
+        }
+        docs.value = doc;
     } catch (error) {
         console.log(error);
     }
