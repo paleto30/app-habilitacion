@@ -35,7 +35,7 @@
                             </div>
                             <div class="offcanvas-body barra_lateral_mobil">
                                 <!-- componente de la barra de navegacion -->
-                                <BarraMenu :menus="itmes" />
+                                <BarraMenu :menus="items" />
 
                                 <!-- pendiente con esto OJJOOOOO -->
                                 <div class="configs">
@@ -53,7 +53,7 @@
             <!-- barra lateral - modo desktop -->
             <div class="barra_lateral">
                 <!-- componente de la barra de navegacion  -->
-                <BarraMenu :menus="itmes" />
+                <BarraMenu :menus="items" />
 
                 <!-- pendiente con esto OJJOOOOO -->
                 <div class="configs ">
@@ -74,38 +74,36 @@
 <script setup>
 
 // coomponente del menu
+import { onMounted, ref } from 'vue';
 import BarraMenu from '../../../shared/components/BarraMenus.vue';
 
 // componente de logout
 import LogoutUsers from '../../../shared/components/LogoutUsers.vue';
 
+// importamos el authStore
+import { useAuthStore } from '../../authentication/stores/authStore';
+
+
+
 // ITEMS PARA LA BARRA DE MENU 
-const itmes = [
-   /*  {
-        text: 'Carreras',
-        nameRoute: 'view-carreras',
-        icon: 'icon-sitemap'
-    },
+const items = ref([]);
+
+const userRol = useAuthStore().authUser.rol;
+
+const itemsSuperAdmin = [
     {
-        text: 'Profesores',
-        nameRoute: 'view-profes',
-        icon: 'icon-briefcase'
-    }, */
+        text: 'Administradores',
+        nameRoute: 'view-admins',
+        icon: 'icon-user'
+    },
+];
+
+const itemsAdmin = [
     {
         text: 'Estudiantes',
         nameRoute: 'view-estudiantes',
         icon: 'icon-stumbleupon'
     },
-   /*  {
-        text: 'Pensum',
-        nameRoute: 'view-pensums',
-        icon: 'icon-cubes'
-    },
-    {
-        text: 'Materias',
-        nameRoute: 'view-materias',
-        icon: 'icon-fire'
-    }, */
     {
         text: 'Habilitaciones',
         nameRoute: 'view-habilitacion',
@@ -115,10 +113,15 @@ const itmes = [
 ];
 
 
+onMounted(() => {
 
+    if (userRol === 1) {
+        items.value = itemsSuperAdmin
+    } else {
+        items.value = itemsAdmin
+    }
 
-
-
+})
 
 
 
