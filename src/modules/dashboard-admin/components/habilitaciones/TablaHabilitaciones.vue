@@ -55,12 +55,13 @@
                 </div>
                 <div class="modal-body cuerpoModal">
                     <!-- aqui va el componente -->
-                    <section class="seccion2 mb-2">
-                        <DetalleHabilitacion :habilitacion="habilitacion" />
-                    </section>
+                   
                     <section class="seccion1 mb-2">
                         <DetalleEstudiante :estudiante="estudiante" :carrera="carrera" />
                         <DetalleProfesor :profesor="profesor" :materia="materia" />
+                    </section>
+                    <section class="seccion2 mb-2">
+                        <DetalleHabilitacion :habilitacion="habilitacion" />
                     </section>
                     <section class="seccion3">
                         <DetalleArchivos :docs="docs" />
@@ -121,8 +122,8 @@ const getStudentInfo = async (id_recovery) => {
         }
         habilitacion.value = recovery;
         const doc = {
-            pdf: `${import.meta.env.VITE_API_GETWAY}/admins/view-pdf/${results.response.img_factura}`,
-            img: `${import.meta.env.VITE_API_GETWAY}/admins/view-image/${results.response.img_recibo_pago}`      
+            pdf: `${import.meta.env.VITE_API_GETWAY}/recoveries/view-pdf/${results.response.img_factura}`,
+            img: `${import.meta.env.VITE_API_GETWAY}/recoveries/view-image/${results.response.img_recibo_pago}`      
         }
         docs.value = doc;
     } catch (error) {
