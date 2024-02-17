@@ -1,7 +1,7 @@
 import { useAuthStore } from "../../authentication/stores/authStore.js";
 
 const baseUrl = import.meta.env.VITE_API_GETWAY;
-const url = `${baseUrl}/admins`
+const url = `${baseUrl}/recoveries`
 
 
 export const getRecoveryList = async (page = 1, amount = 15, objFilter = null) => {
@@ -42,3 +42,4 @@ export const getRecoveryDetails = async (id_recovery) => {
         console.log(error);
     }
 }
+
