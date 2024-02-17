@@ -2,15 +2,14 @@ import { useAuthStore } from "../../authentication/stores/authStore.js";
 
 
 const baseUrl = import.meta.env.VITE_API_GETWAY;
-const url = `${baseUrl}/admins/student-list`;
+const url = `${baseUrl}/recoveries/student-list`;
 
 // obtener lista principal
 export const getStudentList = async (page = 1, amount = 15, objFilter = null) => {
 
     let endpoint = objFilter ? `${url}?amount=${amount}&page=${page}&${objFilter.filter}=${objFilter.value}` : `${url}?amount=${amount}&page=${page}`;
-  
+
     try {
-/*  */
         const response = await fetch(endpoint, {
             method: 'GET',
             headers: {
