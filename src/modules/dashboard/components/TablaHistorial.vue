@@ -90,7 +90,7 @@ async function loadInitData() {
         const data = await getRequestHistory();
 
         if (data.history.length < 1) {
-            invokeAlert('Aviso', 'No se encontraron registros en la tabla', 'warning')
+            invokeAlert(null, `No se encontraron registros`, 'info', 'Entendido')
         }
         lista.value = data.history;
         console.log(lista.value);
