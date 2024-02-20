@@ -33,8 +33,6 @@
                     <td class="rows">
                         <div class="d-flex justify-content-evenly">
                             <span class="icon-trash" @click="removalInsurance(v.id)"></span>
-                            <span class="icon-spin3" title="información" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop" @click="showUpdateAdminForm(v)"></span>
                         </div>
                     </td>
                 </tr>
@@ -56,13 +54,12 @@
             <div class="modal-content ">
                 <div class="modal-header bg-dark">
                     <h5 class="modal-title " id="staticBackdropLabel">{{ modalTitle }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btnModal" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body cuerpoModal">
+                <div class=" modal-body cuerpoModal">
                     <!-- aqui va el componente -->
                     <section class="seccion1 mb-2">
-                        <component :is="currentFormInModal" @reloadTable="reloadRecorsd" />
-                        <!-- <FormRegisterAdmin @reloadTable="reloadRecorsd" /> -->
+                        <component :is="currentFormInModal" @reloadTable="reloadRecorsd" @cleanForm="cerrarModal" />
                     </section>
                 </div>
             </div>
@@ -79,7 +76,7 @@ import PaginacionTablaAdmins from '../administradores/PaginacionTablaAdmins.vue'
 import { getAdministratorList, deleteAdminById } from '../../service/AdministradorService.js';
 import { invokeAlert, alertAreYouSure } from '../../../../shared/js/alertabase.js';
 import FormRegisterAdmin from './FormRegisterAdmin.vue';
-import FormUpdateAdmin from './FormUpdateAdmin.vue';
+
 
 const admins = ref([]);
 const current_page = ref(1);
@@ -234,12 +231,6 @@ const showCreateAdminForm = (e) => {
     modalTitle.value = 'Formulario de registro'
 }
 
-// cargar componente de update
-const showUpdateAdminForm = (data) => {
-    console.log(data);
-    currentFormInModal.value = FormUpdateAdmin
-    modalTitle.value = 'Editar registro'
-}
 
 // funcion para eliminar un item 
 const removalInsurance = async (id) => {
@@ -255,6 +246,10 @@ const removalInsurance = async (id) => {
     }
 }
 
+const cerrarModal = () => {
+    const btnCloseModal = document.querySelector('.btnModal');
+    btnCloseModal.click();
+}
 
 
 </script>
