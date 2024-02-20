@@ -81,6 +81,8 @@
             <div class="row">
                 <div class="col-12 mb-2  d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary" style="width: 50%;">Registrar Administrador</button>
+                    <button type="button" class="btn btn-secondary" style="margin-left: 10px"
+                        @click="cerrarModal">Cancelar</button>
                 </div>
             </div>
         </form>
@@ -96,7 +98,7 @@ import authServices from '../../../authentication/service/authServices.js';
 import { invokeAlert } from '../../../../shared/js/alertabase';
 import { createNewAdministrator, isEmailValid } from '../../service/AdministradorService.js';
 
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(['reloadTable', 'cleanForm']);
 
 
 // sedes
@@ -109,7 +111,6 @@ const facultades = ref([]);
 
 // coordinaciones
 const coordinaciones = ref([]);
-
 
 
 
@@ -181,8 +182,6 @@ onMounted(async () => {
 
 
 
-
-
 // variables para manejar el icono de ver contraseña
 const showPass = ref(false);
 let colorEye = ref(true);
@@ -222,9 +221,9 @@ const handleFormData = async () => {
         clave: password.value,
         id_coordinacion: Number(coordinacion.value),
         rol: rol.value
-    }   
+    }
 
-    if (!isEmailValid(dataToSend.correo)){
+    if (!isEmailValid(dataToSend.correo)) {
         invokeAlert('Error!', 'Dominio de correo invalido, verifique.', 'error', 'Entendido', '#2280E5');
         return;
     }
@@ -241,6 +240,11 @@ const handleFormData = async () => {
     invokeAlert('Excelente!', results.message, 'success', 'Entendido', '#2280E5');
     restartForm()
     emits('reloadTable', true);
+}
+
+const cerrarModal = () => {
+    restartForm()
+    emits('cleanForm')
 }
 
 
