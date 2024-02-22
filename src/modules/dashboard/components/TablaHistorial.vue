@@ -4,7 +4,7 @@
         <table class="table text-center table-hover tabla custom-scrollbar">
             <thead class="table-dark">
                 <tr class="cabeza-tabla">
-                    <th scope="col" class="celTopLeft">#</th>
+                    <!-- <th scope="col" class="celTopLeft">#</th> -->
                     <th scope="col">REFERENCIA</th>
                     <th scope="col">MATERIA</th>
                     <th scope="col">FECHA APROBACION</th>
@@ -13,7 +13,7 @@
             </thead>
             <tbody class="bodyTable">
                 <tr v-for="(item, i) in dataPaginate" :key="i" :data-row="item.id">
-                    <th scope="col">{{ item.id }}</th>
+                   <!--  <th scope="col">{{ i+1/* item.id */ }}</th> -->
                     <td scope="col">{{ item.referencia_pago }}</td>
                     <td scope="col">{{ item.materia }}</td>
                     <td scope="col">{{ new Date(item.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>

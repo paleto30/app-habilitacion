@@ -11,8 +11,8 @@
         <table class="tabla">
             <thead class="cabeza-t sticky-top">
                 <tr>
-                    <th class="titles p-2">ID</th>
-                    <th class="titles">IDENTIFICACION</th>
+                    <!-- <th class="titles p-2">ID</th> -->
+                    <th class="titles p-2">IDENTIFICACION</th>
                     <th class="titles">APELLIDO</th>
                     <th class="titles">NOMBRE</th>
                     <th class="titles">TELEFONO</th>
@@ -23,8 +23,8 @@
             </thead>
             <tbody class="cuerpo-t overflow-auto">
                 <tr v-for="v in estudiantes" :key="v.id" :data-register="v.id" class="focus-row">
-                    <td class="rows p-2 ">{{ v.id }}</td>
-                    <td class="rows">{{ v.identificacion }}</td>
+                    <!-- <td class="rows p-2 ">{{ v.id }}</td> -->
+                    <td class="rows p-2">{{ v.identificacion }}</td>
                     <td class="rows">{{ v.apellido }}</td>
                     <td class="rows">{{ v.nombre }}</td>
                     <td class="rows">{{ v.telefono }}</td>

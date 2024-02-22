@@ -11,8 +11,8 @@
         <table class="tabla">
             <thead class="cabeza-t sticky-top">
                 <tr>
-                    <th class="titles p-2">ID</th>
-                    <th class="titles"># REFERENCIA</th>
+                    <!-- <th class="titles p-2">ID</th> -->
+                    <th class="titles p-2"># REFERENCIA</th>
                     <th class="titles">ESTUDIANTE</th>
                     <th class="titles">MATERIA</th>
                     <th class="titles">PROFESOR</th>
@@ -22,8 +22,8 @@
             </thead>
             <tbody class="cuerpo-t overflow-auto ">
                 <tr v-for="v in habilitaciones" :key="v.id" class="focus-row">
-                    <td class="rows p-2">{{ v.id }}</td>
-                    <td class="rows">{{ v.referencia_pago }}</td>
+                    <!-- <td class="rows p-2">{{ v.id }}</td> -->
+                    <td class="rows p-2">{{ v.referencia_pago }}</td>
                     <td class="rows">{{ v.estudiante }}</td>
                     <td class="rows">{{ v.materia }}</td>
                     <td class="rows">{{ v.profesor }}</td>
