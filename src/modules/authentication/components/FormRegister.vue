@@ -80,16 +80,16 @@
             </div>
             <!-- fila 6 -->
             <div class="row">
-                <div class="col-12 mb-2  d-flex justify-content-center">
+                <div class="col-12  d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary" style="width: 50%;">Registrarse</button>
                 </div>
                 <div id="emailHelp" class="m-0 mb-1 mt-md-3 form-text text-center ">¿ Ya tienes una cuenta ? <button
                         @click.prevent="handleComponent" type="button" class="myLink">Iniciar
                         sesión</button>
                 </div>
-                <div class="mt-md-4 w-100">
-                    <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
-                        uso al ingresar en este aplicativo</div>
+                <div class="mt-md-2 w-100">
+                    <div id="emailHelp" class="form-text text-center">Aceptas nuestros terminos y condiciones de
+                        uso <br> al registrarte en este aplicativo.</div>
                 </div>
             </div>
         </form>

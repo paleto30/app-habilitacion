@@ -91,7 +91,7 @@ const handleFormData = async () => {
 
 
                 if (authStore.authUser.rol === 1) {
-                    router.push({ name: 'dashboard-super' })
+                    router.push({ name: 'dashboard-admin-all-access' })
                 }
             }, 1500)
         }

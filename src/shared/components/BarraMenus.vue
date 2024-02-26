@@ -39,6 +39,7 @@ const props = defineProps({
 
 .lista{
     margin: 1px;
+    font-size: 14px;
 }
 
 .linnk{

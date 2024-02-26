@@ -1,26 +1,18 @@
 <!-- html -->
 <template>
     <div class="form border rounded">
-        <div class="logo">
-            <div>
-                <h2 class="text-center mt-3">Registrarse</h2>
-            </div>
-            <img src="../../../assets/Manzanavector.svg" class="logo_login" alt="" srcset="">
-        </div>
-
-        <form class="p-md-2 container" @submit.prevent="handleFormData">
-
+        <form class="p-md-2  container" @submit.prevent="handleFormData">
             <!-- fila 1 -->
-            <div class="row mb-1 mb-md-3 rowsSmalls">
+            <div class="row pt-3 mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
-                    <select class="form-select text-center inputs" v-model="sede" id="sede" @change="loadFacultades" >
+                    <select class="form-select text-center inputs" v-model="sede" id="sede" @change="loadFacultades">
                         <option value="null" selected class="defaults">Seleccione la Sede</option>
                         <option class="text-center" v-for="item in sedes" :key="item.id" :value="item.id">{{ item.nombre }}
                         </option>
                     </select>
                 </div>
                 <div class="col-12 col-md-6">
-                    <select class="form-select text-center inputs"  v-model="facultad" :disabled="!sede || sede === 'null'"
+                    <select class="form-select text-center inputs" v-model="facultad" :disabled="!sede || sede === 'null'"
                         @change="loadCoordinaciones">
                         <option value="null" selected class="defaults">Seleccione la Facultad</option>
                         <option class="text-center" v-for="item in facultades" :key="item.id" :value="item.id"> {{
@@ -32,7 +24,7 @@
             <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-12 mb-1 mb-md-0">
                     <select class="form-select text-center inputs" v-model="coordinacion"
-                        :disabled="!facultad || facultad === 'null'" @change="loadCarreras">
+                        :disabled="!facultad || facultad === 'null'">
                         <option value="null" selected class="defaults">Seleccione la Coordinación</option>
                         <option class="text-center" v-for="item in coordinaciones" :key="item.id" :value="item.id">{{
                             item.nombre }}</option>
@@ -40,6 +32,17 @@
                 </div>
             </div>
             <!-- fila 3 -->
+            <div class="row mb-1 mb-md-3 rowsSmalls">
+                <div class="col-12 col-md-12 mb-1 mb-md-0">
+                    <select class="form-select text-center inputs" v-model="rol"
+                        :disabled="!coordinacion || coordinacion === 'null'">
+                        <option value="null" selected class="defaults">Seleccione un rol</option>
+                        <option class="text-center" v-for="(rol, i) in roles" :key="i" :value="rol.value">{{ rol.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <!-- fila 4 -->
             <div class="row  mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <input type="text" class="form-control text-center inputs" id="nombre" v-model="nombre"
@@ -50,7 +53,7 @@
                         placeholder="Apellidos" required>
                 </div>
             </div>
-            <!-- fila 4 -->
+            <!-- fila 5 -->
             <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="col-12 col-md-6 mb-1 mb-md-0">
                     <input type="number" class="form-control text-center inputs" id="doc_id" v-model="doc_id"
@@ -62,7 +65,7 @@
                 </div>
             </div>
 
-            <!-- fila 5 -->
+            <!-- fila 6 -->
             <div class="row mb-1 mb-md-3 rowsSmalls">
                 <div class="mb-1 mb-md-3">
                     <input type="email" class="form-control text-center inputs" id="correo" v-model="correo"
@@ -74,18 +77,12 @@
                         placeholder="Contraseña" id="pass" required>
                 </div>
             </div>
-            <!-- fila 6 -->
+            <!-- fila 7 -->
             <div class="row">
                 <div class="col-12 mb-2  d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" style="width: 50%;">Registrarse</button>
-                </div>
-                <div id="emailHelp" class="m-0 mb-1 mt-md-3 form-text text-center ">¿ Ya tienes una cuenta ? <button
-                        @click.prevent="handleComponent" type="button" class="myLink">Iniciar
-                        sesión</button>
-                </div>
-                <div class="mt-md-4 w-100">
-                    <div id="emailHelp" class="form-text text-center">aceptas nuestros terminos y condiciones de
-                        uso al ingresar en este aplicativo</div>
+                    <button type="submit" class="btn btn-primary" style="width: 50%;">Registrar Administrador</button>
+                    <button type="button" class="btn btn-secondary" style="margin-left: 10px"
+                        @click="cerrarModal">Cancelar</button>
                 </div>
             </div>
         </form>
@@ -96,13 +93,12 @@
 <!-- Js -->
 <script setup>
 
-import { useRouter } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
-import authServices from '../service/authServices.js';
-import { invokeAlert } from '../../../shared/js/alertabase.js';
+import authServices from '../../../authentication/service/authServices.js';
+import { invokeAlert } from '../../../../shared/js/alertabase';
+import { createNewAdministrator, isEmailValid } from '../../service/AdministradorService.js';
 
-
-
+const emits = defineEmits(['reloadTable', 'cleanForm']);
 
 
 // sedes
@@ -119,7 +115,6 @@ const coordinaciones = ref([]);
 
 
 
-
 const coordinacion = ref(null);
 const nombre = ref();
 const apellido = ref();
@@ -127,7 +122,18 @@ const doc_id = ref();
 const telefono = ref();
 const correo = ref();
 const password = ref();
+const rol = ref(null);
 
+const roles = [
+    {
+        name: 'SUPER_ADMIN',
+        value: 1,
+    },
+    {
+        name: 'ADMIN',
+        value: 2,
+    },
+]
 
 
 // funcion para cargar los datos en el select de facultades
@@ -135,7 +141,7 @@ const loadFacultades = async () => {
     if (sede.value === null) {
         facultad.value = null;
         coordinacion.value = null;
-        
+
     }
 }
 
@@ -166,7 +172,6 @@ watch(facultad, async (newFacultad) => {
 
 // ONMOUNTED
 onMounted(async () => {
-
     // obtenemos las sedes disponibles
     const dataSedes = await authServices.getAvailablesSedes();
     sedes.value = dataSedes;
@@ -175,12 +180,6 @@ onMounted(async () => {
 
 
 
-
-// router para cambiar a l
-const router = useRouter();
-const handleComponent = () => {
-    router.push({ name: 'login' })
-}
 
 
 // variables para manejar el icono de ver contraseña
@@ -205,6 +204,7 @@ function restartForm() {
     telefono.value = null
     correo.value = null
     password.value = null
+    rol.value = null
 }
 
 
@@ -219,26 +219,32 @@ const handleFormData = async () => {
         telefono: String(telefono.value),
         correo: correo.value,
         clave: password.value,
-        id_coordinacion: Number(coordinacion.value)
+        id_coordinacion: Number(coordinacion.value),
+        rol: rol.value
     }
 
-    const results = await authServices.sendFormDataForAdminRegister(dataToSend);
+    if (!isEmailValid(dataToSend.correo)) {
+        invokeAlert('Error!', 'Dominio de correo invalido, verifique.', 'error', 'Entendido', '#2280E5');
+        return;
+    }
 
+    const results = await createNewAdministrator(dataToSend);
 
-    if (!results.status) {
+    if (!results.success) {
         // alerta de error
         invokeAlert('Error!', results.error, 'error', 'Entendido', '#2280E5');
         return;
     }
 
-
     // alerta de success
     invokeAlert('Excelente!', results.message, 'success', 'Entendido', '#2280E5');
     restartForm()
+    emits('reloadTable', true);
+}
 
-    setTimeout(() => {
-        router.push({ name: 'login' })
-    }, 2000)
+const cerrarModal = () => {
+    restartForm()
+    emits('cleanForm')
 }
 
 
@@ -248,8 +254,8 @@ const handleFormData = async () => {
 <!-- CSS -->
 <style scoped>
 .form {
-    width: 550px;
-    height: 620px;
+    width: 580px;
+    height: 480px;
     box-shadow: 5px 4px 50px rgba(0, 0, 0, 0.300);
 }
 
@@ -270,14 +276,7 @@ const handleFormData = async () => {
     margin-left: 0 !important;
 }
 
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 16px;
-    gap: 20px;
-    margin-bottom: 10px;
-}
+
 
 .logo_login {
     width: 13%;
@@ -347,7 +346,4 @@ input[type="number"]::-webkit-outer-spin-button {
 .defaults {
     font-weight: bold;
 }
-
-
-
 </style>

@@ -16,11 +16,6 @@ const authRutes = [
                 path: 'register',
                 component: () => import('../components/FormRegister.vue'),
                 name: 'register',
-            },
-            {
-                name: 'admin',
-                path: 'admin/view/register',
-                component: () => import('../components/FormRegisterAdmin.vue')
             }
         ]
     }

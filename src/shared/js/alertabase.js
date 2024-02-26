@@ -28,3 +28,32 @@ export const alertProccessSuccess = (title) => {
         timerProgressBar: true
     })
 }
+
+
+export const alertAreYouSure = async (title, text, textConfirm, textCancel, successTitle, successText, confirmBtnText) => {
+    return new Promise((resolve) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor:'#3FC3EE',
+            cancelButtonColor: "#9A9999",
+            confirmButtonText: textConfirm,
+            cancelButtonText: textCancel
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: successTitle,
+                    text: successText,
+                    icon: "success",
+                    confirmButtonText: confirmBtnText,
+                    confirmButtonColor: '#3FC3EE'
+                });
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    })
+}
