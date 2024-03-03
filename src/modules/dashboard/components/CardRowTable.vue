@@ -8,23 +8,23 @@
             <table class="w-100 table miTabla">
                 <tr>
                     <th>Referencia:</th>
-                    <td>{{ props.datos.referencia_pago }}</td>
+                    <td class="fontcolor">{{ props.datos.referencia_pago }}</td>
                 </tr>
                 <tr>
                     <th>Materia:</th>
-                    <td>{{ props.datos.materia }}</td>
+                    <td class="fontcolor">{{ props.datos.materia }}</td>
                 </tr>
                 <tr>
                     <th>Docente:</th>
-                    <td>{{ props.datos.profesor }}</td>
+                    <td class="fontcolor">{{ props.datos.profesor }}</td>
                 </tr>
                 <tr>
                     <th>Correo docente:</th>
-                    <td style="word-break: break-all;">{{ props.datos.correo_profesor }}</td>
+                    <td class="fontcolor" style="word-break: break-all;">{{ props.datos.correo_profesor }}</td>
                 </tr>
                 <tr>
                     <th>Fecha aprovación:</th>
-                    <td>{{ new Date(props.datos.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>
+                    <td class="fontcolor">{{ new Date(props.datos.fecha_aprobacion).toLocaleDateString('es-ES') }}</td>
                 </tr>
             </table>
         </div>
@@ -44,5 +44,10 @@ const props = defineProps(['datos', 'num']);
 .miTabla {
     /* color */
     font-size: smaller;
+}
+
+.fontcolor {
+    /* color */
+    color: rgb(77, 124, 22) !important;
 }
 </style>
